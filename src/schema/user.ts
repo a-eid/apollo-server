@@ -8,6 +8,24 @@ export default gql`
 
   type Mutation {
     createUser(input: CreateUserInput): User!
+    register(input: registerInput): AuthPayload!
+    login(input: loginInput): AuthPayload!
+  }
+
+  input loginInput {
+    email: String!
+    password: String!
+  }
+
+  input registerInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
+  type AuthPayload {
+    token: String
+    user: User!
   }
 
   input CreateUserInput {
