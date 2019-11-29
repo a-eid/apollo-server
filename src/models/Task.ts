@@ -1,11 +1,10 @@
 import { Schema, model } from "mongoose"
-import { NAME as user } from "./User"
+import { names } from "./consts"
 
 const schema = new Schema({
   name: String,
   completed: Boolean,
-  user: { type: Schema.Types.ObjectId, ref: user },
+  user: { type: Schema.Types.ObjectId, ref: names.user },
 })
 
-export const NAME = "Task"
-export default model(NAME, schema)
+export default model(names.task, schema)

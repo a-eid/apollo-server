@@ -1,11 +1,4 @@
-import User from "./models/User"
-import Task from "./models/Task"
-
-async function createUser(_, { input }) {
-  const { name, email } = input
-  const user = await User.create({ name, email })
-  return user
-}
+import { User, Task } from "../models"
 
 async function createTask(_, { input }) {
   const { name, userId } = input
@@ -23,33 +16,21 @@ async function createTask(_, { input }) {
 
 export default {
   Query: {
-    user(_, { id }) {
-      return User.findById(id)
-    },
     task(_, { id }) {
       return Task.findById(id)
     },
     tasks() {
       return Task.find({})
     },
-    users() {
-      return User.find({})
-    },
   },
 
   Mutation: {
-    createUser,
     createTask,
   },
   Task: {
     async user(parent) {
       const { user } = parent
       return User.findById(user)
-    },
-  },
-  User: {
-    async tasks(parent) {
-      return Task.find({ user: parent })
     },
   },
 }
