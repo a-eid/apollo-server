@@ -11,14 +11,18 @@ export default gql`
     pagination: PaginationInfo!
   }
 
+  extend type Mutation {
+    createTask(input: CreateTaskInput!): Task!
+  }
+
+  extend type Subscription {
+    taskAdded: Task!
+  }
+
   type PaginationInfo {
     cursor: String
     # redundent.. equivilent to (cursor !== null)
     hasMore: Boolean!
-  }
-
-  extend type Mutation {
-    createTask(input: CreateTaskInput!): Task!
   }
 
   input CreateTaskInput {

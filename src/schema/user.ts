@@ -10,6 +10,10 @@ export default gql`
     login(input: loginInput): AuthPayload!
   }
 
+  type Subscription {
+    userAdded: User
+  }
+
   input loginInput {
     email: String!
     password: String!

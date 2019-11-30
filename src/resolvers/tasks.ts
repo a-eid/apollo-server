@@ -1,5 +1,6 @@
-import { User, Task } from "../models"
+import { Task } from "../models"
 import { auth, combineResolvers } from "./middleware"
+import { tasksub, pubSub, channels } from "./subscriptions"
 
 async function createTask(_, { input }, { user }) {
   const { name } = input
@@ -12,6 +13,15 @@ async function createTask(_, { input }, { user }) {
 
   user.tasks.push(task)
   await user.save()
+
+  pubSub.publish(channels.userTaskAdded(user.id), {
+    taskAdded: {
+      id: task.id,
+      name,
+      completed: false,
+    },
+  })
+
   return task
 }
 
@@ -48,10 +58,10 @@ export default {
   Mutation: {
     createTask: combineResolvers(auth, createTask),
   },
+  Subscription: tasksub,
   Task: {
     async user(parent, _, { loaders: { fetchUsers } }) {
-      const { user: id } = parent
-      return fetchUsers.load(id)
+      return fetchUsers.load(parent.user || parent.id)
     },
   },
 }
