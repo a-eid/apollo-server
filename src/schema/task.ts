@@ -13,6 +13,7 @@ export default gql`
 
   type PaginationInfo {
     cursor: String
+    # redundent.. equivilent to (cursor !== null)
     hasMore: Boolean!
   }
 

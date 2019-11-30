@@ -1,11 +1,11 @@
 export * from "./auth"
 
 export const combineResolvers = (...funcs) => async (...args) => {
-  let resolvedValue = null
+  const { length, [length - 1]: resolver, ...middlewares } = funcs
 
-  for (const fn of funcs) {
-    resolvedValue = await fn(...args)
+  for (const middleware of Object.values(middlewares)) {
+    await middleware(...args)
   }
 
-  return resolvedValue
+  return resolver(...args)
 }
