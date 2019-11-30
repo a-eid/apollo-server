@@ -19,8 +19,24 @@ function getTask(_, { id }, { user }) {
   return Task.findOne({ id, user })
 }
 
-function getTasks(_, __, { user }) {
-  return Task.find({ user })
+async function getTasks(_, { pagination: { cursor = null, limit = 5 } = {} }, { user }) {
+  let tasks = await Task.find({ user, ...(cursor ? { _id: { $lt: cursor } } : {}) })
+    .sort({ _id: -1 })
+    .limit(limit + 1)
+
+  const hasMore = tasks.length > limit
+
+  if (hasMore) {
+    tasks = tasks.slice(0, limit)
+  }
+
+  return {
+    data: tasks,
+    pagination: {
+      cursor: hasMore ? tasks[tasks.length - 1].id : null,
+      hasMore,
+    },
+  }
 }
 
 export default {
