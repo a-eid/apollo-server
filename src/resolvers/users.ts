@@ -47,8 +47,8 @@ export default {
   },
 
   User: {
-    async tasks(parent) {
-      return Task.find({ user: parent })
+    async tasks(parent, _, { loaders: { getUserTasks } }) {
+      return getUserTasks.load(parent.id)
     },
   },
 }

@@ -49,9 +49,9 @@ export default {
     createTask: combineResolvers(auth, createTask),
   },
   Task: {
-    async user(parent) {
-      const { user } = parent
-      return User.findById(user)
+    async user(parent, _, { loaders: { fetchUsers } }) {
+      const { user: id } = parent
+      return fetchUsers.load(id)
     },
   },
 }

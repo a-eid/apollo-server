@@ -1,5 +1,8 @@
+import * as DataLoader from "dataloader"
 import { verify } from "jsonwebtoken"
 import { Request } from "express"
+
+import { taskLoaders, userLoaders } from "./resolvers/loaders"
 
 import { User } from "./models"
 
@@ -18,5 +21,10 @@ export default async function context({ req }: { req: Request }) {
 
   return {
     user: await getUser(token),
+    loaders: {
+      fetchUsers: new DataLoader((ids: [string]) => userLoaders.fetchUsers(ids)),
+      fetchTasks: new DataLoader((ids: [string]) => taskLoaders.fetchTasks(ids)),
+      getUserTasks: new DataLoader((ids: [string]) => taskLoaders.getUserTasks(ids)),
+    },
   }
 }
