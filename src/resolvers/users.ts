@@ -2,11 +2,7 @@ import { User, Task } from "../models"
 import { hash, compare } from "bcrypt"
 import { sign } from "jsonwebtoken"
 
-async function createUser(_, { input }) {
-  const { name, email } = input
-  const user = await User.create({ name, email })
-  return user
-}
+import { auth, combineResolvers } from "./middleware"
 
 async function register(_, { input }) {
   const { name, email, password } = input
@@ -42,16 +38,10 @@ async function login(_, { input }) {
 
 export default {
   Query: {
-    user(_, { id }) {
-      return User.findById(id)
-    },
-    users() {
-      return User.find({})
-    },
+    me: combineResolvers(auth, (_, __, { user }) => user),
   },
 
   Mutation: {
-    createUser,
     register,
     login,
   },

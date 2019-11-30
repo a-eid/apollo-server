@@ -12,7 +12,6 @@ export default gql`
 
   input CreateTaskInput {
     name: String!
-    userId: String!
   }
 
   type Task {
