@@ -16,7 +16,7 @@
     "@types/jsonwebtoken": "^8.3.5",
     "@types/mongoose": "^5.5.32",
     "@types/node": "^12.12.14",
-    "apollo-server": "^2.9.12",
+    "apollo-server": "^2.14.2",
     "bcrypt": "^3.0.7",
     "cors": "^2.8.5",
     "dataloader": "^2.0.0",
